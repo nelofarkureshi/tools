@@ -6,8 +6,8 @@ Access and Experiences (Primary and Specialist Care). Every estimate is shown
 with its 95% confidence interval and tested against the national rate, and
 results can be broken down by age group and gender.
 
-The tool deliberately highlights which provincial differences are statistically
-meaningful, rather than presenting rankings that overstate them.
+The tool highlights which provincial differences are statistically
+meaningful.
 
 **Live tool:** https://tools.nelofarkureshi.com/access-equity/
 
@@ -19,25 +19,18 @@ meaningful, rather than presenting rankings that overstate them.
 - Read every estimate with its 95% confidence interval in a forest plot.
 - Inspect within-population gaps (age gradient, gender gap) for any province.
 
-## How it is built
 
-A single self-contained HTML file. No server, no build step, no dependencies.
-All published estimates are embedded directly in the page, so it can be hosted
-as a static file anywhere (this copy runs on GitHub Pages).
-
-## What it does and does not claim
+## Limitations
 
 The only formal test in the source is each province against the national rate
 (bootstrapped, p < 0.05), uncorrected for multiple comparisons. Province-to-
 province, age, and gender differences are shown with confidence intervals for
-inspection but are not formally tested. The tool performs no additional
-modelling; it re-presents published aggregate estimates.
+inspection but are not formally tested. The tool re-presents published aggregate estimates.
 
 ## Data source and licence
 
 Statistics Canada, Table 13-10-0962-01, Survey on Health Care Access and
-Experiences (Primary and Specialist Care), 2024. Reproduced and distributed on
-an "as is" basis with the permission of Statistics Canada.
+Experiences (Primary and Specialist Care), 2024. 
 
 Gender categories (Men+, Women+) are a modified two-category gender variable,
 not sex; non-binary respondents are redistributed under Statistics Canada
