@@ -3,23 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Primary &amp; Specialist Care: Access &amp; Equity Explorer — Canada, 2024</title>
+<title>Primary &amp; Specialist Care: Access &amp; Equity Explorer - Canada, 2024</title>
 <meta name="description" content="Interactive explorer of primary and specialist care access and equity across Canadian provinces by age and gender, from Statistics Canada's 2024 survey. Every estimate shows its 95% confidence interval and is tested against the national rate.">
 <meta name="author" content="Nelofar Kureshi">
 <!-- ============================================================
-     SHARE / SOCIAL PREVIEW — update the two URLs below if you
+     SHARE / SOCIAL PREVIEW - update the two URLs below if you
      host at a different path than tools.nelofarkureshi.com/access-equity/
      ============================================================ -->
 <link rel="canonical" href="https://tools.nelofarkureshi.com/access-equity/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Access &amp; Equity Explorer — Primary &amp; Specialist Care, Canada 2024">
+<meta property="og:title" content="Access &amp; Equity Explorer: Primary &amp; Specialist Care, Canada 2024">
 <meta property="og:description" content="Provincial estimates by age and gender, each with its 95% confidence interval and tested against the national rate. Built on Statistics Canada open data.">
 <meta property="og:url" content="https://tools.nelofarkureshi.com/access-equity/">
 <meta property="og:image" content="https://tools.nelofarkureshi.com/access-equity/preview.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Access &amp; Equity Explorer — Primary &amp; Specialist Care, Canada 2024">
+<meta name="twitter:title" content="Access &amp; Equity Explorer: Primary &amp; Specialist Care, Canada 2024">
 <meta name="twitter:description" content="Provincial estimates by age and gender, with confidence intervals and significance testing. Built on Statistics Canada open data.">
 <meta name="twitter:image" content="https://tools.nelofarkureshi.com/access-equity/preview.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230F6E78'/%3E%3Crect x='6' y='6' width='9' height='9' rx='2' fill='%23EAF3F4'/%3E%3Crect x='17' y='6' width='9' height='9' rx='2' fill='%235BA3AA'/%3E%3Crect x='6' y='17' width='9' height='9' rx='2' fill='%239FC9CC'/%3E%3Crect x='17' y='17' width='9' height='9' rx='2' fill='%230C5860'/%3E%3C/svg%3E">
@@ -121,21 +121,17 @@ footer .note{max-width:90ch;margin:0 0 8px}
   .field{width:100%}
   .seg{flex-wrap:wrap}
 }
+.about{margin-top:20px;background:var(--panel);border:1px solid var(--hair);border-left:4px solid var(--accent);border-radius:10px;padding:18px 20px}
+.about h2{font-family:var(--disp);font-size:13px;font-weight:600;letter-spacing:.02em;margin:0 0 8px}
+.about p{font-size:13.5px;line-height:1.6;margin:0 0 10px;color:var(--ink)}
+.about p:last-child{margin:0}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="mast">
-    <p class="eyebrow">Statistics Canada · Table 13-10-0962-01 · interactive re-analysis</p>
     <h1>Primary &amp; Specialist Care: Access and Equity Explorer</h1>
-    <p class="sub">The same 2024 survey CIHI reports from, treated differently: every estimate carries its confidence interval, provinces are tested against the national rate rather than ranked, and within-population gaps by age and gender are made visible.</p>
-    <div class="provenance">
-      <span><b>Year</b> 2024</span>
-      <span><b>Geography</b> 10 provinces + national (territories excluded)</span>
-      <span><b>Gender</b> Men+ / Women+ (not sex)</span>
-      <span><b>Test</b> province vs. national, p&lt;0.05, uncorrected</span>
-    </div>
-    <p class="byline">Built by <a href="https://nelofarkureshi.com" rel="author">Nelofar Kureshi</a> · open data, open code</p>
+    <p class="sub">Data from the 2024 Survey on Health Care Access and Experiences - Primary and Specialist Care (SHCAE-PSC).</p>
   </div>
 
   <div class="controls">
@@ -145,7 +141,7 @@ footer .note{max-width:90ch;margin:0 0 8px}
         <select id="ind"></select>
       </div>
       <div class="field">
-        <label>Map shows</label>
+        <label>Tile color</label>
         <div class="seg" id="modeSeg">
           <button data-m="sig" class="on">Difference from national</button>
           <button data-m="mag">Estimate magnitude</button>
@@ -164,13 +160,13 @@ footer .note{max-width:90ch;margin:0 0 8px}
     <div class="card">
       <h2>Provinces</h2>
       <p class="hint" id="mapHint"></p>
-      <div class="tiles" id="tiles" role="group" aria-label="Provinces — activate a tile to inspect it"></div>
+      <div class="tiles" id="tiles" role="group" aria-label="Provinces: activate a tile to inspect it"></div>
       <div class="canada-cell" id="canadaCell"></div>
       <div class="legend" id="legend"></div>
     </div>
     <div class="card">
       <h2>Provincial comparison</h2>
-      <p class="hint">Point = estimate, whiskers = 95% CI. Dashed line = national rate. Colour marks provinces that differ significantly from national. Province-to-province differences are <b>not</b> formally tested — read CI overlap with caution.</p>
+      <p class="hint">Point = estimate, whiskers = 95% CI. Dashed line = national rate. Color marks provinces that differ significantly from national. Province-to-province differences are <b>not</b> formally tested; read CI overlap with caution.</p>
       <svg class="forest" id="forest"></svg>
     </div>
   </div>
@@ -179,19 +175,25 @@ footer .note{max-width:90ch;margin:0 0 8px}
 
   <div class="within">
     <h2 id="withinTitle">Within-population gaps</h2>
-    <p class="hint">For the selected place and indicator: the age gradient and the Men+/Women+ gap, each with 95% CIs. These within-population differences are shown for inspection but are <b>not</b> formally significance-tested in the source table.</p>
+    <p class="hint">For the selected place and indicator: the age gradient and the Men/Women gap, each with 95% CIs. These within-population differences are shown for inspection but are <b>not</b> formally significance-tested in the source table.</p>
     <div class="cols">
       <div><p class="colh" id="ageColH">By age group</p><svg class="forest" id="ageForest"></svg></div>
       <div><p class="colh" id="genColH">By gender</p><svg class="forest" id="genForest"></svg></div>
     </div>
   </div>
 
+  <div class="about">
+    <h2>What this shows</h2>
+    <p>This tool represents Statistics Canada's published 2024 estimates for the ten provinces, each shown against the national rate with a 95% confidence interval. It performs no additional modeling. Access to primary and specialist care is usually reported as a single provincial number, which hides how much of the spread between provinces is real rather than survey noise, and how unevenly access falls across age and gender within a province.</p>
+    <p>In Nova Scotia, two differences are significant against the national rate: residents are less likely to have a regular health care provider (77.1% against 81.0%) and more likely to report an unmet health care need (25.0% against 22.4%). Within the province, the youngest adults carry most of that gap. Unmet need runs 32.8% among adults aged 18 to 44 against 14.6% among those 65 and over, and provider attachment is lowest in that same younger group. These within-province age differences are not formally tested here, so they are a pattern to watch rather than an established finding.</p>
+  </div>
+
   <footer>
     <p class="note"><b>What is tested.</b> The only significance test in the source is each province against the national rate (bootstrapped, p&lt;0.05), and it is not corrected for the fact that ten provinces are tested per indicator. Province-to-province, age-to-age, and gender differences are not tested; confidence intervals are shown so differences can be judged, but overlapping intervals do not by themselves establish a difference and non-overlap is a conservative signal.</p>
-    <p class="note"><b>Reading the colour.</b> In "estimate magnitude" mode, fill encodes the value only and carries no judgment about whether high is good or bad — that depends on the indicator. In "difference from national" mode, fill marks direction and significance against the national rate.</p>
-    <p class="note"><b>Coverage.</b> Percentage estimates are near-complete across strata. Suppressed or unavailable cells are hatched and shown as "—" and omitted from comparisons. An E flag marks estimates to use with caution.</p>
-    <p class="note"><b>Gender.</b> Men+ and Women+ are a modified two-category gender variable (not sex); non-binary respondents are redistributed under Statistics Canada confidentiality rules.</p>
-    <p class="note"><b>Source &amp; relation to CIHI.</b> Statistics Canada, Table 13-10-0962-01 (Survey on Health Care Access and Experiences — Primary and Specialist Care, 2024). Reproduced and distributed on an "as is" basis with the permission of Statistics Canada. CIHI's "Taking the Pulse, 2025" reports adult access from a custom tabulation of the same survey. This tool adds interactivity, confidence intervals, explicit significance framing, and age/gender stratification, and performs no additional modelling.</p>
+    <p class="note"><b>Reading the color.</b> In "estimate magnitude" mode, fill encodes the value only and carries no judgment about whether high is good or bad; that depends on the indicator. In "difference from national" mode, fill marks direction and significance against the national rate.</p>
+    <p class="note"><b>Coverage.</b> Percentage estimates are near-complete across strata. Suppressed or unavailable cells are hatched and shown as "n/a" and omitted from comparisons. An E flag marks estimates to use with caution.</p>
+    <p class="note"><b>Gender.</b> Men and Women are a modified two-category gender variable (not sex); non-binary respondents are redistributed under Statistics Canada confidentiality rules.</p>
+    <p class="note"><b>Source.</b> Publisher: <a href="https://open.canada.ca/data/en/dataset/edd6fc73-2b05-4864-9184-95f3f5003ab7">Statistics Canada</a>. Licence: <a href="https://open.canada.ca/en/open-government-licence-canada">Open Government Licence - Canada</a>.</p>
     <p class="note">Built by <a href="https://nelofarkureshi.com" rel="author" style="color:var(--accent);font-weight:600;text-decoration:none">Nelofar Kureshi</a>. Source code and data available on request. Free to share and reuse with attribution.</p>
   </footer>
 </div>
@@ -202,8 +204,10 @@ const GEO_ORDER=["British Columbia","Alberta","Saskatchewan","Manitoba","Ontario
 const AB={"British Columbia":"BC","Alberta":"AB","Saskatchewan":"SK","Manitoba":"MB","Ontario":"ON","Quebec":"QC","New Brunswick":"NB","Nova Scotia":"NS","Prince Edward Island":"PE","Newfoundland and Labrador":"NL","Canada (excluding territories)":"CAN"};
 const CANADA="Canada (excluding territories)";
 const GENDERS=["Both genders","Men+","Women+"];
+const GLABEL={"Both genders":"Both genders","Men+":"Men","Women+":"Women"};
+const gl=g=>GLABEL[g]||g;
 const AGES=["Total, 18 years and over","18 to 44 years","45 to 64 years","65 years and over"];
-const AGE_SHORT={"Total, 18 years and over":"All 18+","18 to 44 years":"18–44","45 to 64 years":"45–64","65 years and over":"65+"};
+const AGE_SHORT={"Total, 18 years and over":"All 18+","18 to 44 years":"18-44","45 to 64 years":"45-64","65 years and over":"65+"};
 const GROUPS=[
  ["Access to care",["Consulted a health care provider for a non-urgent primary health care need in the past 12 months","Experienced difficulties getting non-urgent primary health care in the past 12 months","Consulted a medical specialist for an initial consultation in the past 12 months","Experienced difficulties getting specialist care in the past 12 months","Has a regular health care provider"]],
  ["Quality & coordination",["Quality of consultation in the past 12 months - Very good or excellent","Quality of consultation in the past 12 months - Fair or poor","Level of coordination between health care providers in the past 12 months - Very good or excellent","Level of coordination between health care providers in the past 12 months - Fair or poor"]],
@@ -231,12 +235,12 @@ function buildControls(){
   GROUPS.forEach(([grp,inds])=>{const og=document.createElement("optgroup");og.label=grp;
     inds.forEach(ind=>{const o=document.createElement("option");o.value=ind;o.textContent=ind.length>72?ind.slice(0,70)+"…":ind;if(ind===SEL.ind)o.selected=true;og.appendChild(o);});sel.appendChild(og);});
   sel.onchange=e=>{SEL.ind=e.target.value;render();};
-  const gs=document.getElementById("genSeg");GENDERS.forEach(g=>{const b=document.createElement("button");b.textContent=g;if(g===SEL.g)b.classList.add("on");b.onclick=()=>{SEL.g=g;render();};gs.appendChild(b);});
+  const gs=document.getElementById("genSeg");GENDERS.forEach(g=>{const b=document.createElement("button");b.textContent=gl(g);if(g===SEL.g)b.classList.add("on");b.onclick=()=>{SEL.g=g;render();};gs.appendChild(b);});
   const as=document.getElementById("ageSeg");AGES.forEach(a=>{const b=document.createElement("button");b.textContent=AGE_SHORT[a];if(a===SEL.a)b.classList.add("on");b.onclick=()=>{SEL.a=a;render();};as.appendChild(b);});
   document.querySelectorAll("#modeSeg button").forEach(b=>b.onclick=()=>{SEL.mode=b.dataset.m;render();});
 }
 function refreshSegs(){
-  document.querySelectorAll("#genSeg button").forEach(b=>b.classList.toggle("on",b.textContent===SEL.g));
+  document.querySelectorAll("#genSeg button").forEach(b=>b.classList.toggle("on",b.textContent===gl(SEL.g)));
   document.querySelectorAll("#ageSeg button").forEach(b=>b.classList.toggle("on",AGE_SHORT[SEL.a]===b.textContent));
   document.querySelectorAll("#modeSeg button").forEach(b=>b.classList.toggle("on",b.dataset.m===SEL.mode));
 }
@@ -248,16 +252,16 @@ function renderHeadline(){
   const lo=prov.filter(d=>!supp(d)&&d.sig===-1).length;
   const ns=prov.filter(d=>!supp(d)&&d.sig===0).length;
   const na=prov.filter(d=>supp(d)).length;
-  const canv=can&&!supp(can)?can.pct.toFixed(1)+"%":"—";
+  const canv=can&&!supp(can)?can.pct.toFixed(1)+"%":"n/a";
   const k=hi+lo;
-  let s=`For <b>${SEL.ind}</b> (${SEL.g}, ${AGE_SHORT[SEL.a]}), `;
+  let s=`For <b>${SEL.ind}</b> (${gl(SEL.g)}, ${AGE_SHORT[SEL.a]}), `;
   if(k===0){ s+=`<span class="ns">none of the 10 provinces</span> differ significantly from the national rate of ${canv}. The apparent spread is not statistically distinguishable.`; }
   else{ s+=`<b>${k} of 10 provinces</b> differ significantly from the national rate of ${canv} `;
     s+=`(<span class="up">${hi} higher</span>, <span class="dn">${lo} lower</span>). `;
     s+=`The other <span class="ns">${ns}</span> are statistically indistinguishable from the national average.`; }
   if(na) s+=` (${na} suppressed.)`;
   document.getElementById("headline").innerHTML=`<p class="big">${s}</p>
-    <p class="cap">Direction and significance are tested against the national rate only; the ranking implied by a coloured map is not itself a set of tested differences.</p>`;
+    <p class="cap">Direction and significance are tested against the national rate only; the ranking implied by colored tiles is not itself a set of tested differences.</p>`;
 }
 
 function renderTiles(){
@@ -266,7 +270,7 @@ function renderTiles(){
   GEO_ORDER.forEach(geo=>{
     const d=get(geo);const t=document.createElement("div");t.className="tile";
     if(SEL.place===geo)t.classList.add("sel");
-    if(supp(d)){t.classList.add("supp");t.innerHTML=`<span class="ab">${AB[geo]}</span><span class="val">—</span>`;}
+    if(supp(d)){t.classList.add("supp");t.innerHTML=`<span class="ab">${AB[geo]}</span><span class="val">n/a</span>`;}
     else{
       let bg,dark;
       if(sig){bg=SIGFILL[d.sig];dark=false;}
@@ -287,7 +291,7 @@ function renderTiles(){
   const cc=document.getElementById("canadaCell");cc.innerHTML="";
   const c=get(CANADA);const ct=document.createElement("div");ct.className="tile";
   if(SEL.place===CANADA)ct.style.outline="2.5px solid var(--accent)";
-  ct.innerHTML=`<span class="ab">CAN</span><span class="lab">National benchmark</span><span class="val">${supp(c)?"—":c.pct.toFixed(1)+"%"}</span>`;
+  ct.innerHTML=`<span class="ab">CAN</span><span class="lab">National benchmark</span><span class="val">${supp(c)?"n/a":c.pct.toFixed(1)+"%"}</span>`;
   ct.setAttribute("role","button");ct.setAttribute("tabindex","0");ct.setAttribute("aria-label",`Canada national benchmark: ${supp(c)?"not available":c.pct.toFixed(1)+"%"}`);
   const goC=()=>{SEL.place=CANADA;render();};
   ct.onclick=goC;ct.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();goC();}};
@@ -299,7 +303,7 @@ function renderTiles(){
       <span class="k"><span class="swatch" style="background:${SIGFILL[-1]}"></span><span class="g" style="color:var(--lo)">▼</span> lower than national</span>
       <span class="k"><span class="swatch" style="background:${SIGFILL[0]}"></span> not different</span>
       <span class="k"><span class="g" style="color:var(--caution)">‡</span> caution (E)</span>`;
-    document.getElementById("mapHint").innerHTML="Fill and mark show whether each province differs from the national rate. Grey = not statistically different. Click a province to inspect it.";
+    document.getElementById("mapHint").innerHTML="Fill and mark show whether each province differs from the national rate. Gray = not statistically different. Click a province to inspect it.";
   }else{
     lg.innerHTML=`<span class="k">low <span class="ramp" style="background:linear-gradient(90deg,${seq(0)},${seq(.5)},${seq(1)})"></span> high</span>
       <span class="k"><span class="g" style="color:var(--hi)">▲</span> higher</span><span class="k"><span class="g" style="color:var(--lo)">▼</span> lower</span>
@@ -354,10 +358,10 @@ function renderWithin(){
   // age gradient (fix gender = SEL.g), across 3 bands
   const ageRows=["18 to 44 years","45 to 64 years","65 years and over"].map(a=>{const d=at(place,SEL.g,a);return supp(d)?null:Object.assign({},d,{_label:AGE_SHORT[a]});}).filter(Boolean);
   const ageTot=at(place,SEL.g,"Total, 18 years and over");const ageCan=(ageTot&&!supp(ageTot))?Object.assign({},ageTot,{_label:"All 18+"}):null;
-  document.getElementById("ageColH").textContent=`By age group · ${SEL.g}`;
+  document.getElementById("ageColH").textContent=`By age group · ${gl(SEL.g)}`;
   drawForest("ageForest",ageRows,ageCan,{neutral:true,padL:56});
   // gender (fix age = SEL.a), Men+ vs Women+, ref Both
-  const genRows=["Men+","Women+"].map(g=>{const d=at(place,g,SEL.a);return supp(d)?null:Object.assign({},d,{_label:g});}).filter(Boolean);
+  const genRows=["Men+","Women+"].map(g=>{const d=at(place,g,SEL.a);return supp(d)?null:Object.assign({},d,{_label:gl(g)});}).filter(Boolean);
   const both=at(place,"Both genders",SEL.a);const genRef=(both&&!supp(both))?Object.assign({},both,{_label:"Both"}):null;
   document.getElementById("genColH").textContent=`By gender · ${AGE_SHORT[SEL.a]}`;
   drawForest("genForest",genRows,genRef,{neutral:true,padL:56});
@@ -365,16 +369,16 @@ function renderWithin(){
 
 function renderReadout(){
   const host=document.getElementById("readout");const d=get(SEL.place);const can=get(CANADA);
-  const name=SEL.place===CANADA?"Canada (excluding territories)":SEL.place;const strat=`${SEL.g} · ${AGE_SHORT[SEL.a]}`;
+  const name=SEL.place===CANADA?"Canada (excluding territories)":SEL.place;const strat=`${gl(SEL.g)} · ${AGE_SHORT[SEL.a]}`;
   if(supp(d)){host.innerHTML=`<p class="place">${name}</p><p class="est">Estimate not available for this stratum.</p><p class="verdict" style="color:var(--muted)">Try a broader stratum such as "Both genders" or "All 18+".</p>`;return;}
-  let v;const canv=can&&!supp(can)?can.pct.toFixed(1)+"%":"—";
+  let v;const canv=can&&!supp(can)?can.pct.toFixed(1)+"%":"n/a";
   if(SEL.place===CANADA)v=`This is the national reference rate that provinces are tested against.`;
   else if(d.sig===1)v=`<span class="up">Significantly higher</span> than the national rate of ${canv} (p&lt;0.05).`;
   else if(d.sig===-1)v=`<span class="dn">Significantly lower</span> than the national rate of ${canv} (p&lt;0.05).`;
   else v=`Not statistically different from the national rate of ${canv}.`;
   host.innerHTML=`<p class="place">${name} ${d.st==='E'?'<span class="tag">use with caution</span>':''}</p>
-    <p class="est"><b>${d.pct.toFixed(1)}%</b> <span style="color:var(--muted)">95% CI ${d.lo.toFixed(1)}–${d.hi.toFixed(1)}</span> ·
-      <span style="color:var(--muted)">${SEL.ind} — ${strat}</span></p>
+    <p class="est"><b>${d.pct.toFixed(1)}%</b> <span style="color:var(--muted)">95% CI ${d.lo.toFixed(1)}-${d.hi.toFixed(1)}</span> ·
+      <span style="color:var(--muted)">${SEL.ind} · ${strat}</span></p>
     <p class="verdict">${v}</p>`;
 }
 
